@@ -2,7 +2,7 @@ import tensorflow as tf
 import json
 
 class PlantDiseaseModel:
-    def __init__(self, model_path='../model 2/models/plant_disease_detector', class_names_path='../model 2/class_names.json'):
+    def __init__(self, model_path='../model/models/plant_disease_detector', class_names_path='../model/class_names.json'):
         # Load the trained model
         self.model = tf.keras.models.load_model(model_path)
 
