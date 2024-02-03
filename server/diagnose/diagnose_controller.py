@@ -1,14 +1,17 @@
-# app/api/diagnose/controllers/diagnose_controller.py
 import os
 import numpy as np
-from flask import request
+from flask import jsonify, request, request_started
+import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications.efficientnet import preprocess_input
 from diagnose.diagnose_model import PlantDiseaseModel
+from urllib.parse import urlparse
 
 model = PlantDiseaseModel()
 
+
 def diagnose_plant():
+
     if 'image' not in request.files:
         return "No image file provided."
 
@@ -32,10 +35,16 @@ def diagnose_plant():
         predictions = model.predict(input_image)
 
         # Get the predicted class
+        # confidence = np.max(predictions)
         predicted_class_index = np.argmax(predictions)
         predicted_class = model.get_class_name(predicted_class_index)
 
+        # Return the result
+        result = {
+            'disease': predicted_class,
+            # 'confidence': confidence
+        }
+
         # Clean up temporary file
         os.remove(image_path)
-
-        return f'Predicted class: {predicted_class}'
+        return jsonify(result)

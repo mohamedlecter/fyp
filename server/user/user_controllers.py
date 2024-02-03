@@ -81,14 +81,19 @@ def update_user_by_id(user_id):
         password = request.json.get('password')
         email = request.json.get('email')
 
-        if not username or not password:
-            return jsonify({'error': 'Username and password are required'}), 400
+        existing_user = db.db.users.find_one({'_id': user_id})
+        if not existing_user:
+            return jsonify({'error': 'User not found'}), 404
 
-        existing_user = db.db.users.find_one({'email': email})
-        if existing_user:
-            return jsonify({'error': 'Username already exists'}), 400
+        update_data = {}
+        if username:
+            update_data['username'] = username
+        if password:
+            update_data['password'] = password
+        if email:
+            update_data['email'] = email
 
-        db.db.users.update_one({'_id': user_id}, {'$set': {'username': username, 'password': password, 'email': email}})
+        db.db.users.update_one({'_id': user_id}, {'$set': update_data})
         return jsonify({'message': 'User updated'}), 200
     except Exception as e:
         print(e)
