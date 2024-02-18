@@ -23,6 +23,10 @@ app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(diagnose_bp, url_prefix='/diagnose')
 app.register_blueprint(plant_bp, url_prefix='/plant')
 
+@app.route('/')
+def index():
+    return jsonify({'message': 'Welcome to the Plant Disease Diagnosis API'})
+
 
 
 if __name__ == '__main__':
