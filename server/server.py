@@ -1,4 +1,5 @@
-from flask import Flask
+import re
+from flask import Flask, jsonify
 from flask_cors import CORS
 from config.config import Config
 from user.user_routes import user_bp
@@ -7,7 +8,6 @@ from plant.plant_routes import plant_bp
 
 app = Flask(__name__)
 CORS(app)
-
 
 # Load configuration
 app.config.from_object(Config)

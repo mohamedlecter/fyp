@@ -19,7 +19,7 @@ class PlantModel:
         return plant_info
     
     def get_diseases(self):
-        # get Disease List
+        # get Disease List  
         response = requests.get(f"{self.disease_url}?key={self.api_key}")
         diseases = response.json()
         return diseases
