@@ -21,8 +21,8 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
 def load_model_from_bucket():
     global model
     if model is None:
-        model_path = "/tmp/plant_disease_detector.h5"
-        download_blob(BUCKET_NAME, "models/plant_disease_detector.h5", model_path)
+        model_path = "/tmp/EfficientNetB0.h5"
+        download_blob(BUCKET_NAME, "models/EfficientNetB0.h5", model_path)
         model = tf.keras.models.load_model(model_path)
 
 
@@ -53,8 +53,11 @@ def predict(request):
         # Get the predicted class
         predicted_class_index = np.argmax(predictions)
         predicted_class = class_names[predicted_class_index]
+        confidence_score = predictions[0][predicted_class_index]
+        
 
         # Return the result
-        result = {'class': predicted_class}
+        result = {'class': predicted_class, 'confidence': float(confidence_score)}
+        
 
         return result
